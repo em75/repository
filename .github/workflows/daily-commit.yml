@@ -4,6 +4,7 @@ name: Daily Commit Workflow
 on:
   schedule:
     - cron: '0 10 * * *'  # Runs once per day at 10:00 AM UTC
+  workflow_dispatch:  # This allows you to manually trigger the workflow
 
 # This is the job that will be run
 jobs:
