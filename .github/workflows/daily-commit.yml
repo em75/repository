@@ -1,31 +1,31 @@
-name: Daily Commit Workflow
+name: Daily Commit
 
-# Trigger the workflow on a schedule (once per day at 10:00 AM UTC)
 on:
   schedule:
-    - cron: '0 10 * * *'  # Runs once per day at 10:00 AM UTC
-  workflow_dispatch:  # This allows you to manually trigger the workflow
+    - cron: '30 2 * * *'  # Runs daily at 02:30 UTC
+  workflow_dispatch:  # Allows manual triggering
 
-# This is the job that will be run
+permissions:
+  contents: write  # Ensure GitHub Actions can push changes
+
 jobs:
   commit:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # Step 2: Configure Git with your email
-      - name: Set up Git configuration
+      - name: Configure Git (22f2000918@ds.study.iitm.ac.in)
         run: |
+          git config --global user.name "GitHub Action"
           git config --global user.email "22f2000918@ds.study.iitm.ac.in"
-          git config --global user.name "GitHub Actions"
 
-      # Step 3: Create a commit with a unique message
-      - name: Create a commit
+      - name: Make a Change
         run: |
-          echo "Daily commit from GitHub Actions" > commit.txt
-          git add commit.txt
-          git commit -m "Daily commit"
+          echo "Last run: $(date)" > last_run.txt  # Always modify the file
+
+      - name: Commit and Push Changes
+        run: |
+          git add last_run.txt
+          git commit -m "Automated daily commit at $(date)" || echo "No changes to commit"
           git push
