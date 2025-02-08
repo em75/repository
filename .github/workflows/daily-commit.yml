@@ -1,0 +1,30 @@
+name: Daily Commit Workflow
+
+# Trigger the workflow on a schedule (once per day at 10:00 AM UTC)
+on:
+  schedule:
+    - cron: '0 10 * * *'  # Runs once per day at 10:00 AM UTC
+
+# This is the job that will be run
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # Step 2: Configure Git with your email
+      - name: Set up Git configuration
+        run: |
+          git config --global user.email "22f2000918@ds.study.iitm.ac.in"
+          git config --global user.name "GitHub Actions"
+
+      # Step 3: Create a commit with a unique message
+      - name: Create a commit
+        run: |
+          echo "Daily commit from GitHub Actions" > commit.txt
+          git add commit.txt
+          git commit -m "Daily commit"
+          git push
